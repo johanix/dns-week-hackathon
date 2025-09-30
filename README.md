@@ -5,7 +5,7 @@ Some project suggestions for the DNS Week Hackathon in Stockholm, October 2025
 A suggested implementation platform for most of these projects
 is the TDNS Framework, see (foobar)[https://github.com/johanix/tdns.git]
 
-1. NOTIFY+EDE-based error reporting mechanism, sender + receiver
+## 1. NOTIFY+EDE-based error reporting mechanism, sender + receiver
 
 For the ongoing work on multi-provider DNS it is necessary to design an
 error reporting mechanism which allows a "provider" to report an "error"
