@@ -11,14 +11,17 @@ For the ongoing work on multi-provider DNS it is necessary to design an
 error reporting mechanism which allows a "provider" to report an "error"
 back to the zone owner.
 
-The tentative plan is for the zone owner to publish the location of the error
-reporting receiver as a DSYNC record.
+The tentative plan is for the zone owner to publish the location of
+the error reporting receiver as a DSYNC record. The sender tool does a
+DSYNC lookup to find the error reporting target and sends a TSIG
+signed NOTIFY-message containing an error message encoded in an
+EDNS(0) EDE option.
 
 ### 1.a. Define a new DSYNC scheme called "ERROR".
 
 Use the private DSYNC scheme space.
 
-my.zone.   IN DSYNC ANY ERROR 1234 error-receiver.my.zone.
+`my.zone.   IN DSYNC ANY ERROR 1234 error-receiver.my.zone.`
 
 ### 1.b. Define a new EDNS(0) EDE code for "multi-provider errors". 
 
@@ -42,3 +45,22 @@ string.
 
 Only senders in possession of the TSIG key are able to send error messages (i.e.
 the receiver should discard all messages not correctly signed).
+
+
+## 2. Refresh the TDNS KeyState EDNS(0) option.
+
+This is mostly an internal TDNS project. The KeyState implementation is
+lagging behind and is in need of some polishing.
+
+### 2.a. Move the KeyState implementation into tdns/edns0/ as a separate module.
+
+### 2.b. Implement a KeyState query tool.
+
+The Query tool should take a zone and a keyid as arguments, put them into a
+DNS query for the zone name + SOA with a KeyState EDNS(0) option and send to
+the target of the "{zone} DSYNC UPDATE" record. When the response is received
+the contents should be presented.
+
+### 2.c. Implement missing KeyState server-side features.
+
+Right now most of the defined features are missing.
