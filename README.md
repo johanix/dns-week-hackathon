@@ -23,16 +23,17 @@ Use the private DSYNC scheme space.
 
 `my.zone.   IN DSYNC ANY ERROR 1234 error-receiver.my.zone.`
 
-### 1.b. Define a new EDNS(0) EDE code for "multi-provider errors". 
+### 1.b. Define a set of new new EDNS(0) EDE code points.
 
-Use the private EDE space.
+Use the private EDE space to define code points and "extra text"
+for various "multi-provider errors". 
 
-1.c. Implement an extremely simple error-receiver.
+### 1.c. Implement an extremely simple error-receiver.
 
 The receiver should only listen for NOTIFY messages with an attached
 EDNS(0) EDE OPT. On receipt of such a message it should be
-configureable what to do with it. At least "print to terminal" and
-"send to syslog" should be supported.
+configureable what to do with it. A good start would be to support
+"print to terminal" and "send to syslog".
 
 ### 1.d. Implement a simple CLI sender tool.
 
@@ -43,8 +44,9 @@ string.
 
 ### 1.e. Implement TSIG support between sender and receiver.
 
-Only senders in possession of the TSIG key are able to send error messages (i.e.
-the receiver should discard all messages not correctly signed).
+Only senders in possession of a TSIG key known to the receiver are able
+to send error messages that are accepted (i.e. the receiver should discard
+all messages not correctly signed).
 
 
 ## 2. Refresh the TDNS KeyState EDNS(0) option.
